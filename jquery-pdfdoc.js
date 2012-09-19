@@ -1,10 +1,24 @@
+/**
+ * jQuery PDF-DOC Plugin
+ *
+ * LICENSE
+ *
+ * This source file is subject to the Apache Licence, Version 2.0 that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://dev.funkynerd.com/projects/hazaar/wiki/licence
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@funkynerd.com so we can send you a copy immediately.
+ *
+ * @copyright   Copyright (c) 2012 Jamie Carl (http://www.funkynerd.com)
+ * @license     http://dev.funkynerd.com/projects/hazaar/wiki/licence Apache Licence, Version 2.0
+ * @version     0.1
+ */
+
 //PDFJS.workerSrc = 'hazaar/js/pdf.js';
 
 PDFJS.disableWorker = true;
-
-var global_pdf;
-
-var current_page = 1;
 
 (function ( $ ){
 	$.fn.PDFDoc = function( options ) {
@@ -21,29 +35,41 @@ var current_page = 1;
 				
 		}
 		
-		var container = $('<div>').addClass('h-pdf-container');
+		var current_page = this.data('current_page');
 		
-		var canvas = $('<canvas>').addClass('h-pdf-canvas');
+		var mydoc = this;
 		
-		var toolbar = $('<div>').addClass('h-pdf-toolbar')   
+		var container = $('<div>', { 'class' : 'h-pdf-container'});
 		
-		var but_next = $('<button>').html('Next').click(function(){
+		var canvas = $('<canvas>', { 'class' : 'h-pdf-canvas'});
+		
+		var toolbar = $('<div>', { 'class' : 'h-pdf-toolbar'});   
+		
+		var but_next = $('<button>', { html : 'Next' } ).click(function(){
+			
+			var current_page = mydoc.data('current_page');
 			
 			current_page++;
 			
-			renderPage(global_pdf, current_page, canvas.get()[0]);
+			renderPage(mydoc.data('pdf'), current_page, canvas.get()[0]);
+			
+			mydoc.data('current_page', current_page);
 			
 		});
 		
-		var but_prev = $('<button>').html('Prev').click(function(){
+		var but_prev = $('<button>', { html : 'Prev' } ).click(function(){
+			
+			var current_page = mydoc.data('current_page');
 			
 			if(current_page > 1){
 				
 				current_page--;
 				
-				renderPage(global_pdf, current_page, canvas.get()[0]);
+				renderPage(mydoc.data('pdf'), current_page, canvas.get()[0]);
 			
 			}
+			
+			mydoc.data('current_page', current_page);
 			
 		});
 		
@@ -55,34 +81,27 @@ var current_page = 1;
 
 		current_page = settings.page;
 		
-		showPDF(settings.source, canvas.get()[0], current_page);
+		PDFJS.getDocument(settings.source).then(function(pdf) {
+		
+			mydoc.data('pdf', pdf);
+
+			renderPage(pdf, current_page,  canvas.get()[0]);
+		  
+		});
+		
+		this.data('current_page', current_page);
 		
 		return this;
 
 	};
 })( jQuery );
 
-function showPDF(source, canvas, the_page){
-	
-	//
-	// Fetch the PDF document from the URL using promices
-	//
-	PDFJS.getDocument(source).then(function(pdf) {
-		
-	  global_pdf = pdf;
-	
-	  renderPage(pdf, the_page, canvas);
-	  
-	});
-	
-}
-
 function renderPage(pdf, the_page, canvas){
 	
 	  // Using promise to fetch the page
 	  pdf.getPage(the_page).then(function(page) {
 		
-	    var scale = 1;
+	    var scale = 0.8;
 	    
 	    var viewport = page.getViewport(scale);
 	
