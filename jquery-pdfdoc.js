@@ -35,11 +35,9 @@ PDFJS.disableWorker = true;
 				
 		}
 		
-		var current_page = this.data('current_page');
-		
 		var mydoc = this;
 		
-		var container = $('<div>', { 'class' : 'h-pdf-container'});
+		mydoc.addClass('h-pdf-container');
 		
 		var canvas_container = $('<div>', { 'class' : 'h-pdf-canvas-container' } );
 		
@@ -47,7 +45,7 @@ PDFJS.disableWorker = true;
 		
 		var toolbar = $('<div>', { 'class' : 'h-pdf-toolbar'});   
 		
-		var but_next = $('<button>', { html : 'Next' } ).click(function(){
+		var but_next = $('<div>', { 'class' : 'h-pdf-button h-pdf-next' } ).click(function(){
 			
 			var current_page = mydoc.data('current_page');
 			
@@ -59,7 +57,7 @@ PDFJS.disableWorker = true;
 			
 		});
 		
-		var but_prev = $('<button>', { html : 'Prev' } ).click(function(){
+		var but_prev = $('<div>', { 'class' : 'h-pdf-button h-pdf-prev' } ).click(function(){
 			
 			var current_page = mydoc.data('current_page');
 			
@@ -75,23 +73,27 @@ PDFJS.disableWorker = true;
 			
 		});
 		
-		toolbar.append(but_prev).append(but_next);
+		var page_text = $('<span>', { 'class' : 'h-pdf-pagetext', 'html' : 'Page:' } );
 		
-		container.append(toolbar).append(canvas_container.append(canvas));
+		var page_input = $('<input>', { 'type' : 'text', 'class' : 'h-pdf-pageinput', 'value' : settings.page, 'id' : 'h-page-input' } );
 		
-		this.html(container);
-
-		current_page = settings.page;
+		toolbar.append($('<div>').addClass('h-pdf-toolbarPanel').append(but_prev).append(but_next).append(page_text).append(page_input));
+		
+		mydoc.append(toolbar);
+		
+		canvas_container.css('height', mydoc.height() - toolbar.height());
+		
+		mydoc.append(canvas_container.append(canvas));
 		
 		PDFJS.getDocument(settings.source).then(function(pdf) {
 		
 			mydoc.data('pdf', pdf);
 
-			renderPage(pdf, current_page,  canvas.get()[0]);
+			renderPage(pdf, settings.page,  canvas.get()[0]);
 		  
 		});
 		
-		this.data('current_page', current_page);
+		this.data('current_page', settings.page);
 		
 		return this;
 
@@ -103,7 +105,7 @@ function renderPage(pdf, the_page, canvas){
 	  // Using promise to fetch the page
 	  pdf.getPage(the_page).then(function(page) {
 		
-	    var scale = 0.8;
+	    var scale = 1;
 	    
 	    var viewport = page.getViewport(scale);
 	
@@ -130,6 +132,8 @@ function renderPage(pdf, the_page, canvas){
 	    };
 	    
 	    page.render(renderContext);
+	    
+	    $('#h-page-input').val(the_page);
 	    
 	  });
 	  
