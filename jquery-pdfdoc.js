@@ -41,6 +41,8 @@ PDFJS.disableWorker = true;
 		
 		var container = $('<div>', { 'class' : 'h-pdf-container'});
 		
+		var canvas_container = $('<div>', { 'class' : 'h-pdf-canvas-container' } );
+		
 		var canvas = $('<canvas>', { 'class' : 'h-pdf-canvas'});
 		
 		var toolbar = $('<div>', { 'class' : 'h-pdf-toolbar'});   
@@ -75,7 +77,7 @@ PDFJS.disableWorker = true;
 		
 		toolbar.append(but_prev).append(but_next);
 		
-		container.append(toolbar).append(canvas);
+		container.append(toolbar).append(canvas_container.append(canvas));
 		
 		this.html(container);
 
