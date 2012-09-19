@@ -13,7 +13,7 @@
  *
  * @copyright   Copyright (c) 2012 Jamie Carl (http://www.funkynerd.com)
  * @license     http://dev.funkynerd.com/projects/hazaar/wiki/licence Apache Licence, Version 2.0
- * @version     0.1
+ * @version     0.2
  */
 
 //PDFJS.workerSrc = 'hazaar/js/pdf.js';
