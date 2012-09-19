@@ -1,0 +1,26 @@
+body, html {
+	background: #333;
+	padding: 0px;
+	margin: 0px;
+}
+
+.h-pdf-container {
+	width: 100%;
+	overflow: auto;
+	text-align: center;
+}
+
+.h-pdf-toolbar {
+	box-shadow: 4px 4px 8px rgba(0,0,0,0.2);
+	padding: 10px;
+	background: #444;
+	border-bottom: #999;
+	
+}
+
+.h-pdf-canvas {
+	background: #fff;
+	box-shadow: 4px 4px 8px rgba(0,0,0,0.2);
+	border: 1px solid rgba(0,0,0,0.3);
+	margin: 15px;
+}
