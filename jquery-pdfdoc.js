@@ -23,8 +23,30 @@ PDFJS.disableWorker = true;
 (function ( $ ){
     $.fn.PDFDoc = function( options ) {
 
+        renderPage = function (pdf, the_page, canvas, scale){
+            
+              // Using promise to fetch the page
+              pdf.getPage(the_page).then(function(page) {
+                
+                var viewport = page.getViewport(scale);
+            
+                var context = canvas.getContext('2d');
+                
+                canvas.height = viewport.height;
+                
+                canvas.width = viewport.width;
+            
+                page.render( { canvasContext: context, viewport: viewport } );
+                
+                $('#h-page-input').val(the_page);
+                
+              });
+              
+        }
+
         var settings = $.extend( {
-              'page'                : 1
+              'page'                : 1,
+              'scale'               : 1
         }, options);
         
         if(!settings.source){
@@ -37,7 +59,7 @@ PDFJS.disableWorker = true;
         
         var mydoc = this;
         
-        var page_count = 74;
+        var page_count = 0;
         
         mydoc.addClass('h-pdf-container');
         
@@ -55,7 +77,7 @@ PDFJS.disableWorker = true;
             
                 current_page++;
             
-                renderPage(mydoc.data('pdf'), current_page, canvas.get()[0]);
+                renderPage(mydoc.data('pdf'), current_page, canvas.get()[0], mydoc.data('scale'));
                 
             }
             
@@ -71,7 +93,7 @@ PDFJS.disableWorker = true;
                 
                 current_page--;
                 
-                renderPage(mydoc.data('pdf'), current_page, canvas.get()[0]);
+                renderPage(mydoc.data('pdf'), current_page, canvas.get()[0], mydoc.data('scale'));
             
             }
             
@@ -83,9 +105,42 @@ PDFJS.disableWorker = true;
         
         var page_input = $('<input>', { 'type' : 'text', 'class' : 'h-pdf-pageinput', 'value' : settings.page, 'id' : 'h-page-input' } );
         
-        var pages_text = $('<span>', { 'class' : 'h-pdf-pagetext', 'html' : 'of ' + page_count });
+        var of_text = $('<span>', { 'class' : 'h-pdf-pagetext', 'html' : 'of ' });
         
-        toolbar.append($('<div>').addClass('h-pdf-toolbarPanel').append(but_prev).append(but_next).append(page_text).append(page_input).append(pages_text));
+        var pages_text = $('<span>', { 'class' : 'h-pdf-pagecount', 'html' : page_count, 'id' : 'pagecount' });
+        
+        var nav = $('<div>').addClass('h-pdf-toolbarPanel')
+            .append(but_prev)
+            .append(but_next)
+            .append(page_text)
+            .append(page_input)
+            .append(of_text)
+            .append(pages_text);
+        
+        
+        
+        var zoomModes = { 3 : '300%', 2 : '200%', 1.5 : '150%', 1 : 'Actual Size', 0.5 : 'Half Size', 0.25 : '25%', 0.1 : '10%' };
+        
+        var zoom = $('<select>', { 'class' : 'h-pdf-zoom' } );
+        
+        $.each( zoomModes, function(key, value) {
+               
+            var op = zoom.append($("<option></option>").attr("value",key).text(value));
+            
+        });
+        
+        zoom.change(function(){
+           
+           var scale = $(this).val();
+           
+           renderPage(mydoc.data('pdf'), mydoc.data('current_page'), canvas.get()[0], scale);
+           
+           mydoc.data('scale', scale);
+        });
+        
+        nav.append(zoom.val(settings.scale));
+        
+        toolbar.append(nav);
         
         mydoc.append(toolbar);
         
@@ -95,54 +150,21 @@ PDFJS.disableWorker = true;
         
         PDFJS.getDocument(settings.source).then(function(pdf) {
         
+            page_count = pdf.numPages;
+            
+            $('#pagecount').html(page_count);
+            
             mydoc.data('pdf', pdf);
 
-            renderPage(pdf, settings.page,  canvas.get()[0]);
+            renderPage(pdf, settings.page,  canvas.get()[0], settings.scale);
           
         });
         
         this.data('current_page', settings.page);
         
+        this.data('scale', settings.scale);
+        
         return this;
 
     };
 })( jQuery );
-
-function renderPage(pdf, the_page, canvas){
-    
-      // Using promise to fetch the page
-      pdf.getPage(the_page).then(function(page) {
-        
-        var scale = 1;
-        
-        var viewport = page.getViewport(scale);
-    
-        //
-        // Prepare canvas using PDF page dimensions
-        //
-        //var canvas = document.getElementById('the-canvas');
-        
-        var context = canvas.getContext('2d');
-        
-        canvas.height = viewport.height;
-        
-        canvas.width = viewport.width;
-    
-        //
-        // Render PDF page into canvas context
-        //
-        var renderContext = {
-            
-          canvasContext: context,
-          
-          viewport: viewport
-          
-        };
-        
-        page.render(renderContext);
-        
-        $('#h-page-input').val(the_page);
-        
-      });
-      
-}

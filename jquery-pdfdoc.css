@@ -17,11 +17,17 @@ div.h-pdf-container {
 .h-pdf-toolbarPanel {
 }
 
-.h-pdf-pagetext { 
-	margin-left: 10px;
+.h-pdf-pagetext, .h-pdf-pagecount, .h-pdf-zoom { 
 	position: relative;
 	top: -12px;
+}
+
+.h-pdf-pagetext, .h-pdf-pagecount {
 	color: #d8d8d8;
+}
+
+.h-pdf-pagetext, .h-pdf-zoom {
+	margin-left: 10px;
 }
 
 .h-pdf-pageinput {
