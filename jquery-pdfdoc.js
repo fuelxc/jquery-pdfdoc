@@ -178,7 +178,6 @@ PDFJS.disableWorker = true;
             },
             function getDocumentError(message, exception) {
                 
-                alert(message);
                 
             },
             function getDocumentProgress(progressData) {
