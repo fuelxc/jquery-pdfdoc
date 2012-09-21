@@ -13,7 +13,7 @@
  *
  * @copyright   Copyright (c) 2012 Jamie Carl (http://www.funkynerd.com)
  * @license     http://dev.funkynerd.com/projects/hazaar/wiki/licence Apache Licence, Version 2.0
- * @version     0.3
+ * @version     0.4
  */
 
 //PDFJS.workerSrc = 'hazaar/js/pdf.js';
@@ -146,19 +146,43 @@ PDFJS.disableWorker = true;
         
         canvas_container.css('height', mydoc.height() - toolbar.height());
         
-        mydoc.append(canvas_container.append(canvas));
+        mydoc.append(canvas_container.append(progress));
         
-        PDFJS.getDocument(settings.source).then(function(pdf) {
+        var progress = $('<div>', { 'class' : 'h-pdf-progress' } );
         
-            page_count = pdf.numPages;
-            
-            $('#pagecount').html(page_count);
-            
-            mydoc.data('pdf', pdf);
-
-            renderPage(pdf, settings.page,  canvas.get()[0], settings.scale);
-          
-        });
+        progress.css( { top : (canvas_container.height() / 2) - (progress.height() / 2), left : (canvas_container.width() / 2) - (progress.width() / 2) } );
+        
+        progress.append($('<div>', { 'class' : 'h-pdf-progress-bar' } ));
+        
+        canvas_container.append(progress);
+        
+        PDFJS.getDocument(settings.source).then(
+            function getDocumentCallback(pdf) {
+        
+                canvas_container.html(canvas);
+                
+                page_count = pdf.numPages;
+                
+                $('#pagecount').html(page_count);
+                
+                mydoc.data('pdf', pdf);
+    
+                renderPage(pdf, settings.page,  canvas.get()[0], settings.scale);
+              
+            },
+            function getDocumentError(message, exception) {
+                
+                alert(message);
+                
+            },
+            function getDocumentProgress(progressData) {
+                
+                var pct = 100 * (progressData.loaded / progressData.total);
+                
+                progress.children('div').css('width', pct + '%');
+                
+            }
+        );
         
         this.data('current_page', settings.page);
         
