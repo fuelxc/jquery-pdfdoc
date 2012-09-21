@@ -15,6 +15,7 @@ div.h-pdf-container {
 }
 
 .h-pdf-toolbarPanel {
+	
 }
 
 .h-pdf-pagetext, .h-pdf-pagecount, .h-pdf-zoom { 
@@ -92,13 +93,17 @@ div.h-pdf-container {
 	margin: 15px;
 }
 
+.h-pdf-progress, .h-pdf-progress-bar, .h-pdf-progress-bar-overlay {
+	border-radius: 5px;
+}
+	
 .h-pdf-progress {
 	position: absolute;
 	width: 200px;
 	height: 25px;
-	border: 1px solid rgba(0,0,0,0.3);
+	border: 1px solid rgba(30,30,30,0.4);
 	background: rgba(0,0,0,0.1);
-	box-shadow: 1px 1px 2px rgba(0,0,0,0.18);
+	box-shadow: 1px 1px 2px rgba(0,0,0,0.4);
 }
 
 .h-pdf-progress-bar {
@@ -117,4 +122,10 @@ div.h-pdf-container {
 		color-stop(0.14, rgb(4,115,143)),
 		color-stop(0.57, rgb(0,146,179))
 	);
+}
+
+.h-pdf-progress-bar-overlay {
+	width: 100%;
+	height: 100%;
+	background-image: url("images/texture2.png");
 }

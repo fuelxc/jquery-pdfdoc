@@ -13,7 +13,7 @@
  *
  * @copyright   Copyright (c) 2012 Jamie Carl (http://www.funkynerd.com)
  * @license     http://dev.funkynerd.com/projects/hazaar/wiki/licence Apache Licence, Version 2.0
- * @version     0.4
+ * @version     0.5
  */
 
 //PDFJS.workerSrc = 'hazaar/js/pdf.js';
@@ -158,7 +158,7 @@ PDFJS.disableWorker = true;
         
         progress.css( { top : (canvas_container.height() / 2) - (progress.height() / 2), left : (canvas_container.width() / 2) - (progress.width() / 2) } );
         
-        progress.append($('<div>', { 'class' : 'h-pdf-progress-bar' } ));
+        progress.append($('<div>', { 'class' : 'h-pdf-progress-bar' } ).append($('<div>', { 'class' : 'h-pdf-progress-bar-overlay' } )));
         
         canvas_container.append(progress);
         
