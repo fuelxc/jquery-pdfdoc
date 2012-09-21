@@ -144,7 +144,13 @@ PDFJS.disableWorker = true;
         
         mydoc.append(toolbar);
         
-        canvas_container.css('height', mydoc.height() - toolbar.height());
+        var resize_canvas = function(){
+            
+            canvas_container.css('height', mydoc.height() - toolbar.height());
+            
+        }
+        
+        resize_canvas();
         
         mydoc.append(canvas_container.append(progress));
         
@@ -187,6 +193,12 @@ PDFJS.disableWorker = true;
         this.data('current_page', settings.page);
         
         this.data('scale', settings.scale);
+        
+        $(window).resize(function(){
+            
+            resize_canvas();
+            
+        });
         
         return this;
 
