@@ -69,7 +69,7 @@ PDFJS.disableWorker = true;
         
         var toolbar = $('<div>', { 'class' : 'h-pdf-toolbar'});   
         
-        var but_next = $('<div>', { 'class' : 'h-pdf-button h-pdf-next' } ).click(function(){
+        var but_next = $('<div>', { 'class' : 'h-pdf-button h-pdf-next', 'title' : 'Next Page' } ).click(function(){
             
             var current_page = mydoc.data('current_page');
             
@@ -85,7 +85,7 @@ PDFJS.disableWorker = true;
             
         });
         
-        var but_prev = $('<div>', { 'class' : 'h-pdf-button h-pdf-prev' } ).click(function(){
+        var but_prev = $('<div>', { 'class' : 'h-pdf-button h-pdf-prev', 'title' : 'Previous Page' } ).click(function(){
             
             var current_page = mydoc.data('current_page');
             
