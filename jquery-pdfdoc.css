@@ -62,6 +62,8 @@ div.h-pdf-container {
 	margin: 4px 0px 4px 0px;
 	background-repeat: no-repeat;
 	background-position: 4px 4px;
+	border-radius: 4px;
+	border: 1px solid transparent;
 }
 
 .h-pdf-next {
@@ -73,10 +75,12 @@ div.h-pdf-container {
 }
 
 .h-pdf-next:hover, .h-pdf-prev:hover {
-	background-color: rgba(255,255,255,0.1);
+	background-color: rgba(0,0,0,0.1);
+	border: 1px outset rgba(30,30,30,0.3);
 }
 
 .h-pdf-next:active, .h-pdf-prev:active {
+	border-style: inset;
 }
 
 .h-pdf-canvas-container {
