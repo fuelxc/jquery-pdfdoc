@@ -105,6 +105,22 @@ PDFJS.disableWorker = true;
         
         var page_input = $('<input>', { 'type' : 'text', 'class' : 'h-pdf-pageinput', 'value' : settings.page, 'id' : 'h-page-input' } );
         
+        page_input.keypress(function(event){
+           
+           if(event.which == 13){
+               
+               current_page = $(this).val();
+               
+               renderPage(mydoc.data('pdf'), current_page, canvas.get()[0], mydoc.data('scale'));
+               
+           }else if((event.which < 48 || event.which > 57) && ( event.which != 8 && event.which != 0)){
+
+               return false;
+               
+           }
+            
+        });
+        
         var of_text = $('<span>', { 'class' : 'h-pdf-pagetext', 'html' : 'of ' });
         
         var pages_text = $('<span>', { 'class' : 'h-pdf-pagecount', 'html' : page_count, 'id' : 'pagecount' });
