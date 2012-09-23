@@ -67,6 +67,20 @@ PDFJS.disableWorker = true;
         
         var canvas = $('<canvas>', { 'class' : 'h-pdf-canvas'});
         
+        canvas.dblclick(function(event){
+            
+            var scale = mydoc.data('scale');
+            
+            scale += 0.5;
+            
+            mydoc.data('scale', scale);
+            
+            renderPage(mydoc.data('pdf'), mydoc.data('current_page'), $(this).get()[0], scale);
+            
+            $('#page-zoom').val(scale);
+
+        });
+        
         var toolbar = $('<div>', { 'class' : 'h-pdf-toolbar'});   
         
         var but_next = $('<div>', { 'class' : 'h-pdf-button h-pdf-next', 'title' : 'Next Page' } ).click(function(){
@@ -137,7 +151,7 @@ PDFJS.disableWorker = true;
         
         var zoomModes = { 3 : '300%', 2 : '200%', 1.5 : '150%', 1 : 'Actual Size', 0.5 : 'Half Size', 0.25 : '25%', 0.1 : '10%' };
         
-        var zoom = $('<select>', { 'class' : 'h-pdf-zoom' } );
+        var zoom = $('<select>', { 'class' : 'h-pdf-zoom', 'id' : 'page-zoom' } );
         
         $.each( zoomModes, function(key, value) {
                
@@ -147,7 +161,7 @@ PDFJS.disableWorker = true;
         
         zoom.change(function(){
            
-           var scale = $(this).val();
+           var scale = parseFloat($(this).val());
            
            renderPage(mydoc.data('pdf'), mydoc.data('current_page'), canvas.get()[0], scale);
            
