@@ -66,6 +66,15 @@ div.h-pdf-container {
 	border: 1px solid transparent;
 }
 
+.h-pdf-button:hover {
+	background-color: rgba(0,0,0,0.1);
+	border: 1px outset rgba(30,30,30,0.3);
+}
+
+.h-pdf-button:active {
+	border-style: inset;
+}
+
 .h-pdf-next {
 	background-image: url("images/toolbarButton-pageDown.png");
 }
@@ -74,13 +83,11 @@ div.h-pdf-container {
 	background-image: url("images/toolbarButton-pageUp.png");
 }
 
-.h-pdf-next:hover, .h-pdf-prev:hover {
-	background-color: rgba(0,0,0,0.1);
-	border: 1px outset rgba(30,30,30,0.3);
-}
-
-.h-pdf-next:active, .h-pdf-prev:active {
-	border-style: inset;
+.h-pdf-download {
+	position: absolute;
+	top: 0px;
+	right: 5px;
+	background-image: url("images/toolbarButton-download.png");
 }
 
 .h-pdf-canvas-container {

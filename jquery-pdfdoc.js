@@ -139,6 +139,7 @@ PDFJS.disableWorker = true;
         
         var pages_text = $('<span>', { 'class' : 'h-pdf-pagecount', 'html' : page_count, 'id' : 'pagecount' });
         
+        
         var nav = $('<div>').addClass('h-pdf-toolbarPanel')
             .append(but_prev)
             .append(but_next)
@@ -171,6 +172,26 @@ PDFJS.disableWorker = true;
         nav.append(zoom.val(settings.scale));
         
         toolbar.append(nav);
+        
+        var but_dl = $('<div>', { 'class' : 'h-pdf-button h-pdf-download' } );
+        
+        but_dl.click(function(){
+            
+            var delim = '?';
+            
+            if( url =~ /\?/){
+                
+                delim = '&';
+                
+            }
+            
+            var url = settings.source + delim + "action=download";
+            
+            window.open(url, '_parent');
+            
+        });
+        
+        toolbar.append(but_dl);
         
         mydoc.append(toolbar);
         
