@@ -40,7 +40,6 @@ div.h-pdf-container {
 	display: inline-block;
 	float: left;
 	line-height: 8px;
-	border-radius: 3px;
 }
 	
 .h-pdf-toolbar-group .h-pdf-button:last-child {
@@ -49,6 +48,11 @@ div.h-pdf-container {
 
 .h-pdf-toolbar-group:hover { 
 	border-color: rgba(0,0,0,0.3);
+	border-color: rgba(0, 0, 0, 0.32) rgba(0, 0, 0, 0.38) rgba(0, 0, 0, 0.42);
+    border-image: none;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .h-pdf-button {
@@ -145,12 +149,16 @@ div.h-pdf-container {
 	display: inline-block;
 	margin: 3px;
 	border: 1px outset transparent;
-	border-radius: 3px;
 	background-image: url("images/toolbarButton-download.png");
 }
 
 .h-pdf-download:hover {
 	border-color: rgba(0,0,0,0.3);
+	border-color: rgba(0, 0, 0, 0.32) rgba(0, 0, 0, 0.38) rgba(0, 0, 0, 0.42);
+    border-image: none;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .h-pdf-canvas-container {
