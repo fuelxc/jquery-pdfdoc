@@ -81,8 +81,25 @@ PDFJS.disableWorker = true;
 
         });
         
+        
+        /*
+         *Create the toolbar layouts
+         */
         var toolbar = $('<div>', { 'class' : 'h-pdf-toolbar'});   
         
+        var toolbar_left = $('<div>', { 'class' : 'h-pdf-toolbar-left' } );
+        
+        var toolbar_right = $('<div>', { 'class' : 'h-pdf-toolbar-right' } );
+        
+        var toolbar_center = $('<div>').addClass('h-pdf-toolbar-center');
+        
+        toolbar.append(toolbar_left).append(toolbar_right).append(toolbar_center);
+        
+        mydoc.append(toolbar);
+        
+        /*
+         * Create the nav buttons
+         */
         var but_next = $('<div>', { 'class' : 'h-pdf-button h-pdf-next', 'title' : 'Next Page' } ).click(function(){
             
             var current_page = mydoc.data('current_page');
@@ -115,6 +132,9 @@ PDFJS.disableWorker = true;
             
         });
         
+        /*
+         * Create the page input
+         */
         var page_text = $('<span>', { 'class' : 'h-pdf-pagetext', 'html' : 'Page:' } );
         
         var page_input = $('<input>', { 'type' : 'text', 'class' : 'h-pdf-pageinput', 'value' : settings.page, 'id' : 'h-page-input' } );
@@ -127,6 +147,8 @@ PDFJS.disableWorker = true;
                
                renderPage(mydoc.data('pdf'), current_page, canvas.get()[0], mydoc.data('scale'));
                
+               mydoc.data('current_page', current_page);
+                
            }else if((event.which < 48 || event.which > 57) && ( event.which != 8 && event.which != 0)){
 
                return false;
@@ -139,40 +161,47 @@ PDFJS.disableWorker = true;
         
         var pages_text = $('<span>', { 'class' : 'h-pdf-pagecount', 'html' : page_count, 'id' : 'pagecount' });
         
-        
-        var nav = $('<div>').addClass('h-pdf-toolbarPanel')
-            .append(but_prev)
-            .append(but_next)
-            .append(page_text)
-            .append(page_input)
-            .append(of_text)
-            .append(pages_text);
-        
-        
-        
+        /*
+         * Create the zoom droplist
+         */
         var zoomModes = { 3 : '300%', 2 : '200%', 1.5 : '150%', 1 : 'Actual Size', 0.5 : 'Half Size', 0.25 : '25%', 0.1 : '10%' };
         
-        var zoom = $('<select>', { 'class' : 'h-pdf-zoom', 'id' : 'page-zoom' } );
+        var zoom = $('<span>', { 'class' : 'h-pdf-zoom' } );
+        
+        var zoom_select = $('<select>', { 'class' : 'h-pdf-zoom-select', 'id' : 'page-zoom' } );
+        
+        zoom.append(zoom_select);
         
         $.each( zoomModes, function(key, value) {
                
-            var op = zoom.append($("<option></option>").attr("value",key).text(value));
+            var op = zoom_select.append($("<option></option>").attr("value",key).text(value));
             
         });
         
-        zoom.change(function(){
+        zoom_select.change(function(){
            
            var scale = parseFloat($(this).val());
            
            renderPage(mydoc.data('pdf'), mydoc.data('current_page'), canvas.get()[0], scale);
            
            mydoc.data('scale', scale);
-        });
+        }).val(settings.scale);
         
-        nav.append(zoom.val(settings.scale));
+        /*
+         * Add the nav buttons, page input and zoom droplist to the center toolbar
+         */
+        toolbar_center.append($('<div>', { 'class' : 'h-pdf-toolbar-group' } ).append(but_prev).append(but_next))
+            .append(page_text)
+            .append(page_input)
+            .append(of_text)
+            .append(pages_text)
+            .append(zoom);
         
-        toolbar.append(nav);
+        toolbar.append($('<div>', { 'class' : 'h-pdf-toolbar-center-outer' } ).append(toolbar_center));
         
+        /*
+         * Create the direct download button
+         */
         var but_dl = $('<div>', { 'class' : 'h-pdf-button h-pdf-download' } );
         
         but_dl.click(function(){
@@ -191,9 +220,7 @@ PDFJS.disableWorker = true;
             
         });
         
-        toolbar.append(but_dl);
-        
-        mydoc.append(toolbar);
+        toolbar_right.append(but_dl);
         
         var resize_canvas = function(){
             
