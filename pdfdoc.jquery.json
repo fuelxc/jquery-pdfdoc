@@ -1,0 +1,35 @@
+{
+    "name": "pdfdoc",
+    "version": "0.7.0",
+    "title": "The PDF.js Plugin for jQuery",
+    "author": { 
+        "name": "Jamie Carl", 
+        "email": "jazz@funkynerd.com", 
+        "url": "http://www.funkynerd.com"
+    },
+    "licenses" : [
+        {
+            "type": "Apache-2.0",
+            "url": "http://opensource.org/licenses/Apache-2.0"
+        }
+    ],
+    "dependencies": {
+        "jquery" : ">=1.7.0"
+    },
+    "description": "pdfdoc is a jQuery plugin that wraps the functionality of PDF.js from Mozilla to enable the viewing of PDF documents without the need for an external viewer application.  PDFs are rendered using JavaScript.",
+    "keywords": [
+        "pdf", "PDF.js", "viewer", "document"
+    ],
+    "homepage": "http://dev.funkynerd.com/projects/jquery-pdfdoc",
+    "docs": "http://dev.funkynerd.com/projects/jquery-pdfdoc/wiki/Quick_Start_Guide",
+    "demo": "http://www.hazaarmvc.com/pdfdoc",
+    "download": "http://dev.funkynerd.com/attachments/download/79/jquery-pdfdoc-0.7.zip",
+    "bugs": "http://dev.funkynerd.com/projects/jquery-pdfdoc/issues",
+    "maintainers": [
+        { 
+            "name": "Jamie Carl", 
+            "email": "jazz@funkynerd.com", 
+            "url": "http://www.funkynerd.com"
+        }
+    ]  
+}
