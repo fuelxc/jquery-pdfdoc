@@ -24,7 +24,7 @@ PDFJS.disableWorker = true;
     $.fn.PDFDoc = function( options ) {
 
         renderPage = function (mydoc, the_page, canvas, scale){
-              var pdf = mydoc.data('pdf');
+              var pdf = $(mydoc).data('pdf');
             
               // Using promise to fetch the page
               pdf.getPage(the_page).then(function(page) {
@@ -76,7 +76,7 @@ PDFJS.disableWorker = true;
             
             mydoc.data('scale', scale);
             
-            renderPage(mydoc.data('pdf'), mydoc.data('current_page'), $(this).get()[0], scale);
+            renderPage(mydoc, mydoc.data('current_page'), $(this).get()[0], scale);
             
             $(mydoc).find('.h-pdf-zoom-select').val(scale);
 
@@ -252,7 +252,7 @@ PDFJS.disableWorker = true;
                 
                 mydoc.data('pdf', pdf);
     
-                renderPage(pdf, settings.page,  canvas.get()[0], settings.scale);
+                renderPage(mydoc, settings.page,  canvas.get()[0], settings.scale);
               
             },
             function getDocumentError(message, exception) {
