@@ -23,7 +23,8 @@ PDFJS.disableWorker = true;
 (function ( $ ){
     $.fn.PDFDoc = function( options ) {
 
-        renderPage = function (pdf, the_page, canvas, scale){
+        renderPage = function (mydoc, the_page, canvas, scale){
+              var pdf = mydoc.data('pdf');
             
               // Using promise to fetch the page
               pdf.getPage(the_page).then(function(page) {
@@ -38,7 +39,7 @@ PDFJS.disableWorker = true;
             
                 page.render( { canvasContext: context, viewport: viewport } );
                 
-                $('#h-page-input').val(the_page);
+                $(mydoc).find('.h-pdf-pageinput').val(the_page);
                 
               });
               
@@ -77,7 +78,7 @@ PDFJS.disableWorker = true;
             
             renderPage(mydoc.data('pdf'), mydoc.data('current_page'), $(this).get()[0], scale);
             
-            $('#page-zoom').val(scale);
+            $(mydoc).find('.h-pdf-zoom-select').val(scale);
 
         });
         
@@ -108,7 +109,7 @@ PDFJS.disableWorker = true;
             
                 current_page++;
             
-                renderPage(mydoc.data('pdf'), current_page, canvas.get()[0], mydoc.data('scale'));
+                renderPage(mydoc, current_page, canvas.get()[0], mydoc.data('scale'));
                 
             }
             
@@ -124,7 +125,7 @@ PDFJS.disableWorker = true;
                 
                 current_page--;
                 
-                renderPage(mydoc.data('pdf'), current_page, canvas.get()[0], mydoc.data('scale'));
+                renderPage(mydoc, current_page, canvas.get()[0], mydoc.data('scale'));
             
             }
             
@@ -137,7 +138,7 @@ PDFJS.disableWorker = true;
          */
         var page_text = $('<span>', { 'class' : 'h-pdf-pagetext', 'html' : 'Page:' } );
         
-        var page_input = $('<input>', { 'type' : 'text', 'class' : 'h-pdf-pageinput', 'value' : settings.page, 'id' : 'h-page-input' } );
+        var page_input = $('<input>', { 'type' : 'text', 'class' : 'h-pdf-pageinput', 'value' : settings.page } );
         
         page_input.keypress(function(event){
            
@@ -145,7 +146,7 @@ PDFJS.disableWorker = true;
                
                current_page = $(this).val();
                
-               renderPage(mydoc.data('pdf'), current_page, canvas.get()[0], mydoc.data('scale'));
+               renderPage(mydoc, current_page, canvas.get()[0], mydoc.data('scale'));
                
                mydoc.data('current_page', current_page);
                 
@@ -159,7 +160,7 @@ PDFJS.disableWorker = true;
         
         var of_text = $('<span>', { 'class' : 'h-pdf-pagetext', 'html' : 'of ' });
         
-        var pages_text = $('<span>', { 'class' : 'h-pdf-pagecount', 'html' : page_count, 'id' : 'pagecount' });
+        var pages_text = $('<span>', { 'class' : 'h-pdf-pagecount', 'html' : page_count});
         
         /*
          * Create the zoom droplist
@@ -168,7 +169,7 @@ PDFJS.disableWorker = true;
         
         var zoom = $('<span>', { 'class' : 'h-pdf-zoom' } );
         
-        var zoom_select = $('<select>', { 'class' : 'h-pdf-zoom-select', 'id' : 'page-zoom' } );
+        var zoom_select = $('<select>', { 'class' : 'h-pdf-zoom-select'} );
         
         zoom.append(zoom_select);
         
@@ -182,7 +183,7 @@ PDFJS.disableWorker = true;
            
            var scale = parseFloat($(this).val());
            
-           renderPage(mydoc.data('pdf'), mydoc.data('current_page'), canvas.get()[0], scale);
+           renderPage(mydoc, mydoc.data('current_page'), canvas.get()[0], scale);
            
            mydoc.data('scale', scale);
         }).val(settings.scale);
@@ -247,7 +248,7 @@ PDFJS.disableWorker = true;
                 
                 page_count = pdf.numPages;
                 
-                $('#pagecount').html(page_count);
+                $(mydoc).find('.h-pdf-pagecount').html(page_count);
                 
                 mydoc.data('pdf', pdf);
     
