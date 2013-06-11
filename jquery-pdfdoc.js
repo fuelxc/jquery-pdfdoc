@@ -47,7 +47,8 @@ PDFJS.disableWorker = true;
 
         var settings = $.extend( {
               'page'                : 1,
-              'scale'               : 1
+              'scale'               : 1,
+              'focusout'            : false
         }, options);
         
         if(!settings.source){
@@ -157,6 +158,16 @@ PDFJS.disableWorker = true;
            }
             
         });
+
+        if (settings['focusout']) {
+          page_input.focusout(function(event){
+            current_page = $(this).val();
+               
+            renderPage(mydoc, current_page, canvas.get()[0], mydoc.data('scale'));
+
+            mydoc.data('current_page', current_page);
+          });
+        }
         
         var of_text = $('<span>', { 'class' : 'h-pdf-pagetext', 'html' : 'of ' });
         
